@@ -1,4 +1,5 @@
 ﻿using SwaggerStoreWeb.Models;
+using SwaggerTranslator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

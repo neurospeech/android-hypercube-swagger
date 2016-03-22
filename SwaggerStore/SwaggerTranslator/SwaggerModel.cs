@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
-namespace SwaggerStoreWeb.Models
+namespace SwaggerTranslator.Models
 {
+
     public class SwaggerModel
     {
 
@@ -24,12 +25,13 @@ namespace SwaggerStoreWeb.Models
 
             var paths = swagger.ObjectValue("paths");
 
-            Methods = paths.Select(x => new SwaggerMethod(x.Key,x.Value)).ToList();
+            Methods = paths.Select(x => new SwaggerMethod(x.Key, x.Value)).ToList();
 
         }
 
 
-        public static SwaggerModel From(string text) {
+        public static SwaggerModel From(string text)
+        {
 
             return new SwaggerModel(text);
 
@@ -44,8 +46,9 @@ namespace SwaggerStoreWeb.Models
 
     }
 
-    public class SwaggerMethod  {
-        
+    public class SwaggerMethod
+    {
+
 
         public SwaggerMethod(string name, object value)
         {
@@ -65,7 +68,7 @@ namespace SwaggerStoreWeb.Models
 
             Parameters = parameters.Select(p => new SwaggerParameter(p)).ToList();
 
-            Responses = responses.Select(r => new SwaggerResponse(r.Key,r.Value)).ToList();
+            Responses = responses.Select(r => new SwaggerResponse(r.Key, r.Value)).ToList();
         }
 
         public string Description { get; set; }
@@ -82,7 +85,8 @@ namespace SwaggerStoreWeb.Models
     }
 
 
-    public class SwaggerResponse {
+    public class SwaggerResponse
+    {
 
         public SwaggerResponse(string name, object value)
         {
@@ -90,7 +94,8 @@ namespace SwaggerStoreWeb.Models
             var d = (JsonObject)value;
             Description = d.StringValue("description");
             var schema = d.ObjectValue("schema");
-            if (schema != null) {
+            if (schema != null)
+            {
                 if ((schema.StringValue("type")) == "array")
                 {
                     Schema = new SwaggerSchemaArray(schema);
@@ -111,7 +116,8 @@ namespace SwaggerStoreWeb.Models
     }
 
 
-    public class SwaggerSchema {
+    public class SwaggerSchema
+    {
 
         public SwaggerSchema(JsonObject schema)
         {
@@ -119,11 +125,11 @@ namespace SwaggerStoreWeb.Models
 
             var props = schema.ObjectValue("properties");
 
-            Properties = props.Select( x=> {
+            Properties = props.Select(x => {
                 var m = new SwaggerMember((JsonObject)x.Value);
                 m.Name = (string)x.Key;
                 return m;
-            } ).ToList();
+            }).ToList();
         }
 
         public string Name { get; set; }
@@ -132,9 +138,10 @@ namespace SwaggerStoreWeb.Models
 
     }
 
-    public class SwaggerSchemaArray : SwaggerSchema {
+    public class SwaggerSchemaArray : SwaggerSchema
+    {
 
-        public SwaggerSchemaArray(JsonObject schema):base(schema.ObjectValue("items"))
+        public SwaggerSchemaArray(JsonObject schema) : base(schema.ObjectValue("items"))
         {
             ArrayName = schema.StringValue("title");
 
@@ -161,15 +168,17 @@ namespace SwaggerStoreWeb.Models
         public string Format { get; set; }
     }
 
-    public class SwaggerParameter : SwaggerMember  {
+    public class SwaggerParameter : SwaggerMember
+    {
 
-        public SwaggerParameter(JsonObject token):base(token)
+        public SwaggerParameter(JsonObject token) : base(token)
         {
 
             Required = token.BoolValue("required");
 
             string p = token.StringValue("in");
-            if (p != null) {
+            if (p != null)
+            {
                 p = p.ToLower();
                 switch (p)
                 {
@@ -194,7 +203,8 @@ namespace SwaggerStoreWeb.Models
 
     }
 
-    public enum Position {
+    public enum Position
+    {
         None,
         Query,
         FormData,
@@ -202,4 +212,88 @@ namespace SwaggerStoreWeb.Models
     }
 
 
+    public class JsonObject : IEnumerable<KeyValuePair<String, object>>
+    {
+        Dictionary<String, object> values;
+
+        public JsonObject(Dictionary<String, object> values)
+        {
+            this.values = values;
+
+            foreach (var p in values.ToList())
+            {
+                var d = p.Value as Dictionary<string, object>;
+                if (d != null)
+                {
+                    this.values[p.Key] = new JsonObject(d);
+                }
+
+
+                var a = p.Value as IList;
+                if (a != null)
+                {
+                    this.values[p.Key] = new List<JsonObject>(a.Cast<Dictionary<string, object>>().Select(n => new JsonObject(n)));
+                }
+            }
+        }
+
+
+        //public object this[string key] {
+        //    get {
+        //        object v = null;
+
+        //        values.TryGetValue(key, out v);
+        //        return v;
+        //    }
+        //}
+
+
+        public string StringValue(String key)
+        {
+            object v = null;
+            values.TryGetValue(key, out v);
+            return v as string;
+        }
+
+        public JsonObject ObjectValue(string key)
+        {
+            object v = null;
+            values.TryGetValue(key, out v);
+            return v as JsonObject;
+        }
+
+        public bool BoolValue(string key)
+        {
+            object v = null;
+            if (values.TryGetValue(key, out v))
+                return (bool)v;
+            return false;
+        }
+
+        public IEnumerable<JsonObject> ArrayValue(string key)
+        {
+            object v = null;
+            values.TryGetValue(key, out v);
+            return ((System.Collections.IEnumerable)v).Cast<JsonObject>();
+        }
+
+        public static JsonObject Parse(string text)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return new JsonObject((Dictionary<String, object>)js.DeserializeObject(text));
+        }
+
+        IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
+        {
+            return this.values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.values.GetEnumerator();
+        }
+    }
+
+
 }
+

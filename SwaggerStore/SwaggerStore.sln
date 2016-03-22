@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwaggerStoreWeb", "SwaggerStoreWeb\SwaggerStoreWeb.csproj", "{AC63534D-3ECE-44C3-B44A-44F6C4E315D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwaggerTranslator", "SwaggerTranslator\SwaggerTranslator.csproj", "{A8240D10-0EC2-4BBE-9F2B-F2D2DC97CBC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwaggerTranslatorTest", "SwaggerTranslatorTest\SwaggerTranslatorTest.csproj", "{18A72D2B-0D47-4D5B-B83C-B7D84A8D60BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{AC63534D-3ECE-44C3-B44A-44F6C4E315D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC63534D-3ECE-44C3-B44A-44F6C4E315D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC63534D-3ECE-44C3-B44A-44F6C4E315D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8240D10-0EC2-4BBE-9F2B-F2D2DC97CBC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8240D10-0EC2-4BBE-9F2B-F2D2DC97CBC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8240D10-0EC2-4BBE-9F2B-F2D2DC97CBC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8240D10-0EC2-4BBE-9F2B-F2D2DC97CBC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A72D2B-0D47-4D5B-B83C-B7D84A8D60BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A72D2B-0D47-4D5B-B83C-B7D84A8D60BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A72D2B-0D47-4D5B-B83C-B7D84A8D60BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A72D2B-0D47-4D5B-B83C-B7D84A8D60BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

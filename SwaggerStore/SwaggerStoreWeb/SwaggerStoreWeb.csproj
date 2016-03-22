@@ -172,8 +172,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CodeModel.cs" />
-    <Compile Include="Models\JsonObject.cs" />
-    <Compile Include="Models\SwaggerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +193,12 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\CodeGen\Models\" />
     <Folder Include="Areas\CodeGen\Views\Shared\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SwaggerTranslator\SwaggerTranslator.csproj">
+      <Project>{a8240d10-0ec2-4bbe-9f2b-f2d2dc97cbc2}</Project>
+      <Name>SwaggerTranslator</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
