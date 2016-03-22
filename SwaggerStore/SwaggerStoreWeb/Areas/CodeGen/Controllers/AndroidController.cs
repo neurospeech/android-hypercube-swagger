@@ -17,7 +17,8 @@ namespace SwaggerStoreWeb.Areas.CodeGen.Controllers
             var swagger = SwaggerModel.From(model.Text);
             
 
-            return Content("");
+            return Json(new {
+            });
         }
 
 
