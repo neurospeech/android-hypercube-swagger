@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Test";
+}
+
+@section Header{
+
+    <script type="text/javascript">
+
+        var model = {
+            text: ''
+        };
+
+    </script>
+
+}
+
+<textarea 
+          class="dock-fill" 
+          atom-value="$[data.text]"></textarea>
+<footer>
+    <button atom-type="AtomPostButton"
+            atom-post-url="/codegen/android/hypercube"
+            atom-next="[ $owner.postResult.url ]">
+        Generate
+    </button>
+</footer>
+
+
